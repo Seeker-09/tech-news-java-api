@@ -20,16 +20,20 @@ import java.util.List;
 public class HomePageController {
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     PostRepository postRepository;
+
     @Autowired
     VoteRepository voteRepository;
+
     @Autowired
     CommentRepository commentRepository;
 
     @GetMapping("/login")
     public String login(Model model, HttpServletRequest request) {
-        if(request.getSession(false) != null) {
+
+        if (request.getSession(false) != null) {
             return "redirect:/";
         }
 
@@ -39,7 +43,7 @@ public class HomePageController {
 
     @GetMapping("/users/logout")
     public String logout(HttpServletRequest request) {
-        if(request.getSession(false) != null) {
+        if (request.getSession(false) != null) {
             request.getSession().invalidate();
         }
         return "redirect:/login";
@@ -49,16 +53,16 @@ public class HomePageController {
     public String homepageSetup(Model model, HttpServletRequest request) {
         User sessionUser = new User();
 
-        if(request.getSession(false) != null) {
+        if (request.getSession(false) != null) {
             sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
             model.addAttribute("loggedIn", sessionUser.isLoggedIn());
-        }
-        else {
+        } else {
             model.addAttribute("loggedIn", false);
         }
 
+
         List<Post> postList = postRepository.findAll();
-        for(Post p : postList) {
+        for (Post p : postList) {
             p.setVoteCount(voteRepository.countVotesByPostId(p.getId()));
             User user = userRepository.getById(p.getUserId());
             p.setUserName(user.getUsername());
@@ -67,7 +71,7 @@ public class HomePageController {
         model.addAttribute("postList", postList);
         model.addAttribute("loggedIn", sessionUser.isLoggedIn());
 
-        // "point" and "points" attributes refer to upvotes
+        // "point" and "points" attributes refer to upvotes.
         model.addAttribute("point", "point");
         model.addAttribute("points", "points");
 
