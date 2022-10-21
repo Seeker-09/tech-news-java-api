@@ -36,7 +36,7 @@ public class TechNewsController {
     @PostMapping("/users/login")
     public String login(@ModelAttribute User user, Model model, HttpServletRequest request) throws Exception {
 
-        if ((user.getPassword().equals(null) || user.getPassword().isEmpty()) || (user.getEmail().equals(null) || user.getPassword().isEmpty())) {
+        if ((user.getPassword() == null || user.getPassword().isEmpty()) || (user.getEmail() == null || user.getPassword().isEmpty())) {
             model.addAttribute("notice", "Email address and password must be populated in order to login!");
             return "login";
         }
